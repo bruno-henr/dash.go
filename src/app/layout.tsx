@@ -22,9 +22,9 @@ export default function RootLayout({
 }) {
 
   return (
-    <html lang='en' className={roboto.className}>
+    <html lang='en' >
       
-      <body >
+      <body className={roboto.className}>
         <CacheProvider>
           <ChakraProvider theme={theme}>
             {children}
