@@ -9,8 +9,10 @@ import {
   Box,
   Avatar,
   useBreakpointValue,
+  IconButton,
 } from "@chakra-ui/react";
 import {
+  RiMenuLine,
   RiNotificationLine,
   RiSearchLine,
   RiUserAddLine,
@@ -19,8 +21,11 @@ import Profile from "./components/Profile";
 import NotificationNav from "./components/NotificationNav";
 import SearchBox from "./components/SearchBox";
 import Logo from "./components/Logo";
+import { useSideBarDrawer } from "@/contexts/SideBarDrawerContext";
 
 export const Header: React.FC = () => {
+  const { onOpen } = useSideBarDrawer();
+
   const isWideVersion = useBreakpointValue({
     base: false,
     lb: true,
@@ -37,6 +42,17 @@ export const Header: React.FC = () => {
       align="center"
       px="6"
     >
+      {!isWideVersion && (
+        <IconButton
+          aria-label='Open drawer'
+          icon={<Icon as={RiMenuLine} />}
+          fontSize="24"
+          variant="unstyled"
+          onCanPlay={onOpen}
+          mr="2"
+        />
+      )}
+
       <Logo />
 
       {isWideVersion && <SearchBox />}
