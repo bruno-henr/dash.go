@@ -1,6 +1,15 @@
 "use client";
 import React from "react";
-import { Flex, Text, Input, Icon, HStack, Box, Avatar } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Input,
+  Icon,
+  HStack,
+  Box,
+  Avatar,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import {
   RiNotificationLine,
   RiSearchLine,
@@ -9,9 +18,14 @@ import {
 import Profile from "./components/Profile";
 import NotificationNav from "./components/NotificationNav";
 import SearchBox from "./components/SearchBox";
-import Logo from './components/Logo';
+import Logo from "./components/Logo";
 
 export const Header: React.FC = () => {
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lb: true,
+  });
+
   return (
     <Flex
       width="100%"
@@ -25,12 +39,12 @@ export const Header: React.FC = () => {
     >
       <Logo />
 
-      <SearchBox />
+      {isWideVersion && <SearchBox />}
 
       <Flex align="center" ml="auto">
         <NotificationNav />
 
-        <Profile />
+        <Profile showProfileData={isWideVersion} />
       </Flex>
     </Flex>
   );

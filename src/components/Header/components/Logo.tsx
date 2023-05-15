@@ -3,7 +3,11 @@ import React from "react";
 
 const Logo: React.FC = () => {
   return (
-    <Text fontSize="3xl" fontWeight="bold" letterSpacing="tight">
+    <Text 
+      fontSize={["2xl","3xl"]} 
+      fontWeight="bold" 
+      letterSpacing="tight"
+    >
       dashgo
       <Text as="span" color="pink.500" ml="1">
         .
