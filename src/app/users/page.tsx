@@ -21,12 +21,13 @@ import {
 } from "@chakra-ui/react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { Pagination } from "@/components/Pagination";
+import Link from "next/link";
 
 const users: React.FC = () => {
-    const isWideVersion = useBreakpointValue({
-        base: false,
-        lg: true
-    });
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true,
+  });
 
   return (
     <Box>
@@ -39,21 +40,23 @@ const users: React.FC = () => {
               Usuários
             </Heading>
 
-            <Button
-              as="a"
-              size="sm"
-              fontSize="sm"
-              colorScheme="pink"
-              leftIcon={<Icon as={RiAddLine} fontSize="16" />}
-            >
-              Criar novo
-            </Button>
+            <Link href={'/users/create'} passHref>
+              <Button
+                as="a"
+                size="sm"
+                fontSize="sm"
+                colorScheme="pink"
+                leftIcon={<Icon as={RiAddLine} fontSize="16" />}
+              >
+                Criar novo
+              </Button>
+            </Link>
           </Flex>
 
           <Table colorScheme="whiteAlpha">
             <Thead>
               <Tr>
-                <Th px={["4","4", "6"]} color="gray.300" width="8">
+                <Th px={["4", "4", "6"]} color="gray.300" width="8">
                   <Checkbox colorScheme="pink" />
                 </Th>
                 <Th>Usuário</Th>
@@ -63,7 +66,7 @@ const users: React.FC = () => {
             </Thead>
             <Tbody>
               <Tr>
-                <Td px={["4","4", "6"]}>
+                <Td px={["4", "4", "6"]}>
                   <Checkbox colorScheme="pink" />
                 </Td>
                 <Td>
@@ -83,7 +86,7 @@ const users: React.FC = () => {
                     colorScheme="purple"
                     leftIcon={<Icon as={RiPencilLine} />}
                   >
-                    {isWideVersion && 'Editar'}
+                    {isWideVersion && "Editar"}
                   </Button>
                 </Td>
               </Tr>
