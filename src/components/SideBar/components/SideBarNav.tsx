@@ -14,14 +14,14 @@ const SideBarNav: React.FC = () => {
   return (
     <Stack spacing="12" align="flex-start">
       <NavSection title="GERAL">
-        <NavLink icon={RiDashboardLine} name="Dashboard" />
+        <NavLink icon={RiDashboardLine} href="/dashboard" name="Dashboard" />
 
-        <NavLink icon={RiContactsLine} name="Usuários" />
+        <NavLink icon={RiContactsLine} href="/users" name="Usuários" />
       </NavSection>
 
       <NavSection title="GERAL">
-        <NavLink icon={RiInputMethodLine} name="Formulários" />
-        <NavLink icon={RiGitMergeLine} name="Automação" />
+        <NavLink icon={RiInputMethodLine} href="/forms" name="Formulários" />
+        <NavLink icon={RiGitMergeLine} href="/automation" name="Automação" />
       </NavSection>
     </Stack>
   );
