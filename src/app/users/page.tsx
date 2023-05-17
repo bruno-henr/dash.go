@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 // components
 import { Header } from "@/components/Header";
 import { SideBar } from "@/components/SideBar";
@@ -24,30 +24,18 @@ import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { Pagination } from "@/components/Pagination";
 import Link from "next/link";
 import { useQuery } from "react-query";
+import { api } from "@/services/api";
+import { useUsers } from "@/services/hooks/useUsers";
 
 const users: React.FC = () => {
-  const { data, isLoading, error } = useQuery("users", async () => {
-    const response = await fetch("http://localhost:3000/api/users");
-    const data = await response.json();
+  const [page, setPage] = useState(1);
 
-    return data.users.map((user:any) => {
-      return {
-        ...user,
-        createdAt: new Date(user.createdAt).toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric'
-        })
-      }
-    })
-  });
+  const { data, isLoading, error, isFetching, refetch } = useUsers(page)
 
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   });
-
-  useEffect(() => {}, []);
 
   return (
     <Box>
@@ -58,6 +46,7 @@ const users: React.FC = () => {
           <Flex mb="8" justify={"space-between"} align={"center"}>
             <Heading size="lg" fontWeight={"normal"}>
               Usuários
+              {!isLoading && isFetching && <Spinner color='gray.500' size='sm' />}
             </Heading>
 
             <Link href={"/users/create"} passHref>
@@ -126,7 +115,11 @@ const users: React.FC = () => {
                   })}
                 </Tbody>
               </Table>
-              <Pagination />
+              <Pagination 
+                totalCountOfRegisters={data.totalCount}
+                currentPage={page}
+                onPageChange={setPage}
+              />
             </>
           )}
         </Box>
