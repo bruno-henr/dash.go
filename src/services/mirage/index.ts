@@ -1,4 +1,4 @@
-import { Factory, Model, createServer } from "miragejs";
+import { Factory, Model, Response, createServer } from "miragejs";
 type User = {
   name: string;
   email: string;
@@ -12,32 +12,46 @@ export function makeServer() {
     },
 
     factories: {
-        user: Factory.extend({
-            name(index) {
-                return `User ${index+1}`
-            },
-            email() {
-                return 'brunohenriue@gmail.com'
-            },
-            createdAt() {
-                return new Date().toString();
-            },
-        })
+      user: Factory.extend({
+        name(index) {
+          return `User ${index + 1}`;
+        },
+        email() {
+          return "brunohenriue@gmail.com";
+        },
+        createdAt() {
+          return new Date().toString();
+        },
+      }),
     },
 
     seeds(server) {
-        server.createList('user', 10)
+      server.createList("user", 10);
     },
 
     routes() {
       this.namespace = "api";
       this.timing = 750;
 
-      this.get("/users");
+      this.get("/users", function (schema, request) {
+        const { page = 1, per_page = 10 } = request.queryParams;
+
+        const total = schema.all("user").length;
+
+        const pageStart = (Number(page) - 1) * Number(per_page);
+        const pageEnd = pageStart + Number(per_page);
+
+        const users = this.serialize(schema.all("user")).users.slice(
+          pageStart,
+          pageEnd
+        );
+
+        return new Response(200, { "x-total-count": String(total) }, { users });
+      });
       this.post("/users");
 
       this.namespace = "";
-      this.passthrough()
+      this.passthrough();
     },
   });
 
