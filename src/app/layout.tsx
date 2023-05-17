@@ -11,6 +11,7 @@ import { SideBarDrawerProvider } from "../contexts/SideBarDrawerContext";
 import { makeServer } from "@/services/mirage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { queryClient } from "@/services/queryClient";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -24,7 +25,7 @@ if (process.env.NODE_ENV === "development") {
   makeServer();
 }
 
-const queryClient= = new QueryClient()
+
 
 
 export default function RootLayout({

@@ -18,6 +18,11 @@ import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from 'react-query'
+import { api } from "@/services/api";
+import { queryClient } from "@/services/queryClient";
+import { useRouter } from "next/router";
+
 
 type CreateUserFormData = {
   name: string;
@@ -36,13 +41,32 @@ const createUserFormSchema = yup.object().shape({
 });
 
 const UserCreate: React.FC = () => {
-  const { register, handleSubmit, formState } = useForm({
-    resolver: yupResolver(createUserFormSchema)
+  const router = useRouter();
+
+  const createUser = useMutation(async (user: CreateUserFormData) => {
+    const response = await api.post('/users', {
+      user: {
+        ...user,
+        created_at: new Date()
+      }
+    })
+
+    return response.data.user
+  }, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('users')
+    }
   });
 
-  const handleCreateUser: SubmitHandler<CreateUserFormData> = (values) => {
+  const { register, handleSubmit, formState } = useForm({
+    resolver: yupResolver(createUserFormSchema),
+  });
 
-  }
+  const handleCreateUser: SubmitHandler<CreateUserFormData> = async (values) => {
+    await createUser.mutateAsync(values);
+
+    router.push('/users');
+  };
 
   return (
     <Box>
@@ -50,11 +74,11 @@ const UserCreate: React.FC = () => {
 
       <Flex w="100%" my="6" maxWidth={1400} mx="auto" px="6">
         <SideBar />
-        <Box 
-          as="form" 
-          flex="1" 
-          borderRadius={8} 
-          bg="gray.800" 
+        <Box
+          as="form"
+          flex="1"
+          borderRadius={8}
+          bg="gray.800"
           p={["6", "8"]}
           onSubmit={handleSubmit(handleCreateUser)}
         >
@@ -66,8 +90,8 @@ const UserCreate: React.FC = () => {
 
           <VStack spacing="8">
             <SimpleGrid minChildWidth={"240px"} spacing={["6", "8"]} w="100%">
-              <Input  {...register('name')} label="Nome completo" />
-              <Input  {...register('email')} label="E-mail" type="email" />
+              <Input {...register("name")} label="Nome completo" />
+              <Input {...register("email")} label="E-mail" type="email" />
             </SimpleGrid>
 
             <SimpleGrid minChildWidth={"240px"} spacing={["6", "8"]} w="100%">
@@ -76,7 +100,7 @@ const UserCreate: React.FC = () => {
                 // name="password_confirmation"
                 type="password"
                 label="Confirme a senha"
-                {...register('password_confirmation')}
+                {...register("password_confirmation")}
               />
             </SimpleGrid>
           </VStack>
@@ -88,7 +112,11 @@ const UserCreate: React.FC = () => {
                   Cancelar
                 </Button>
               </Link>
-              <Button colorScheme="pink" type='submit' isLoading={formState.isSubmitting}>
+              <Button
+                colorScheme="pink"
+                type="submit"
+                isLoading={formState.isSubmitting}
+              >
                 Salvar
               </Button>
             </HStack>

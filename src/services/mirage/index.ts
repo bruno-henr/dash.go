@@ -1,4 +1,4 @@
-import { Factory, Model, Response, createServer } from "miragejs";
+import { ActiveModelSerializer, Factory, Model, Response, createServer } from "miragejs";
 type User = {
   name: string;
   email: string;
@@ -7,6 +7,10 @@ type User = {
 
 export function makeServer() {
   const server = createServer({
+    serializers: {
+      application: ActiveModelSerializer,
+      
+    },
     models: {
       user: Model.extend<Partial<User>>({}),
     },
@@ -48,6 +52,7 @@ export function makeServer() {
 
         return new Response(200, { "x-total-count": String(total) }, { users });
       });
+      this.get("/users/:id");
       this.post("/users");
 
       this.namespace = "";

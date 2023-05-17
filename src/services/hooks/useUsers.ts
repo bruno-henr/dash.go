@@ -29,7 +29,7 @@ export async function getUsers(page: number): Promise<GetUsersResponse> {
         day: "2-digit",
         month: "long",
         year: "numeric",
-      }),
+      }), 
     };
   });
   return {
@@ -38,5 +38,5 @@ export async function getUsers(page: number): Promise<GetUsersResponse> {
   };
 }
 export const useUsers = async (page: number) => {
-  return useQuery(["users", page], () => getUsers(page), { staleTime: 1000 * 5 });
+  return useQuery(["users", page], () => getUsers(page), { staleTime: 1000 * 60 * 10 });
 };
