@@ -12,7 +12,7 @@ import {
 import React from "react";
 
 import SideBarNav from "./components/SideBarNav";
-import { DrawerOverlay } from "@chakra-ui/core";
+import { DrawerOverlay } from "@chakra-ui/react";
 import { useSideBarDrawer } from "@/contexts/SideBarDrawerContext";
 
 export const SideBar: React.FC = () => {

@@ -1,5 +1,5 @@
 import Link, { LinkProps } from "next/link";
-import { useRouter } from "next/router";
+import { useRouter, usePathname } from "next/navigation";
 import React, { ReactElement, ReactNode, cloneElement } from "react";
 
 interface IActiveLinkProps extends LinkProps {
@@ -12,7 +12,7 @@ const ActiveLink: React.FC<IActiveLinkProps> = ({
   shouldMatchExactHref = false,
   ...rest
 }) => {
-  const { asPath } = useRouter();
+  const asPath = usePathname()
 
   let isActive = false;
 
